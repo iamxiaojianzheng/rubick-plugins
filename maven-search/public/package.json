@@ -1,0 +1,37 @@
+{
+  "name": "@jiahe/rubick-maven-search",
+  "pluginName": "maven-search",
+  "version": "1.0.0",
+  "description": "最快捷的Maven搜索。自研搜索算法，无论单词多长，输入你记得的前几个字母即可。热度排序，使用的人数越多，结果越智能。",
+  "preload": "preload.js",
+  "logo": "https://pica.zhimg.com/v2-b39ef280661e794671f49a844e7276aa.png",
+  "pluginType": "ui",
+  "features": [
+    {
+      "code": "maven",
+      "explain": "输入内容查询依赖，复制格式为maven格式",
+      "cmds": [
+        "maven",
+        "mvn"
+      ]
+    },
+    {
+      "code": "gradle",
+      "explain": "输入内容查询依赖，复制格式为gradle格式",
+      "cmds": [
+        "gradle"
+      ]
+    },
+    {
+      "code": "kotlin",
+      "explain": "输入内容查询依赖，复制格式为gradle(kotlin)格式",
+      "cmds": [
+        "kotlin"
+      ]
+    }
+  ],
+  "author": "JIAHE",
+  "license": "ISC",
+  "development": "http://localhost:4001",
+  "homePage": "https://gitee.com/rubick-center/rubick-plugin-demo/raw/master/README.md"
+}
