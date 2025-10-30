@@ -1,0 +1,31 @@
+{
+  "name": "@jiahe/rubick-regex-editor",
+  "author": "JIAHE",
+  "version": "1.0.0",
+  "pluginType": "ui",
+  "main": "index.html",
+  "unpack": "solver.php",
+  "pluginName": "正则编辑器",
+  "preload": "preload/preload.js",
+  "description": "JavaScript & PHP正则表达式编辑器",
+  "logo": "https://pic1.zhimg.com/v2-637e14288d76389dc4d982a60ba3f6a5.png",
+  "homePage": "https://raw.githubusercontent.com/iamxiaojianzheng/rubick-plugins/refs/heads/main/regex-editor/README.md",
+  "pluginSetting": {
+    "single": false
+  },
+  "features": [
+    {
+      "code": "regex",
+      "explain": "正则表达式编辑器",
+      "cmds": [
+        "Regex Editor",
+        "正则编辑器",
+        {
+          "type": "regex",
+          "match": "/^\\/.*\\/[igmsuUxyDAXJ]*$/",
+          "label": "正则编辑器"
+        }
+      ]
+    }
+  ]
+}
