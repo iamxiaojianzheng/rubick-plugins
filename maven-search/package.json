@@ -1,9 +1,14 @@
 {
   "name": "@jiahe/rubick-maven-search",
-  "description": "Rubick插件：最快捷的Maven搜索。自研搜索算法，无论单词多长，输入你记得的前几个字母即可。热度排序，使用的人数越多，结果越智能。",
-  "version": "1.0.1",
   "author": "JIAHE",
-  "main": "index.html",
+  "license": "MIT",
+  "version": "1.0.1",
+  "pluginType": "ui",
+  "preload": "preload.js",
+  "pluginName": "Maven搜索",
+  "logo": "https://pica.zhimg.com/v2-b39ef280661e794671f49a844e7276aa.png",
+  "homePage": "https://raw.githubusercontent.com/iamxiaojianzheng/rubick-plugins/refs/heads/main/maven-search/README.md",
+  "description": "Rubick插件：最快捷的Maven搜索。自研搜索算法，无论单词多长，输入你记得的前几个字母即可。热度排序，使用的人数越多，结果越智能。",
   "scripts": {
     "build": "sh build.sh",
     "clean": "rm -rf ./dist"
@@ -12,24 +17,28 @@
     "type": "git",
     "url": "https://github.com/iamxiaojianzheng/rubick-plugins/tree/main/maven-search"
   },
-  "eslintConfig": {
-    "root": true,
-    "env": {
-      "node": true
+  "features": [
+    {
+      "code": "maven",
+      "explain": "输入内容查询依赖，复制格式为maven格式",
+      "cmds": [
+        "maven",
+        "mvn"
+      ]
     },
-    "extends": [
-      "plugin:vue/vue3-essential",
-      "eslint:recommended"
-    ],
-    "parserOptions": {
-      "parser": "@babel/eslint-parser"
+    {
+      "code": "gradle",
+      "explain": "输入内容查询依赖，复制格式为gradle格式",
+      "cmds": [
+        "gradle"
+      ]
     },
-    "rules": {}
-  },
-  "browserslist": [
-    "> 1%",
-    "last 2 versions",
-    "not dead",
-    "not ie 11"
+    {
+      "code": "kotlin",
+      "explain": "输入内容查询依赖，复制格式为gradle(kotlin)格式",
+      "cmds": [
+        "kotlin"
+      ]
+    }
   ]
 }
