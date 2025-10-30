@@ -1,0 +1,51 @@
+{
+  "name": "@jiahe/tinypng",
+  "pluginName": "tinypng压缩图片",
+  "description": "使用tinypng压缩图片",
+  "author": "JIAHE",
+  "homepage": "https://github.com/csj8520",
+  "version": "2.0.2",
+  "logo": "logo.png",
+  "main": "index.html",
+  "preload": "preload.js",
+  "development": {
+    "main": "http://localhost:3100",
+    "preload": "preload.js"
+  },
+  "features": [
+    {
+      "code": "tinypng",
+      "explain": "压缩图片",
+      "cmds": [
+        "tinypng",
+        "压缩图片",
+        {
+          "type": "files",
+          "fileType": "file",
+          "match": "/\\.(png|jpeg|jpg|webp)$/i",
+          "label": "压缩图片"
+        },
+        {
+          "type": "files",
+          "fileType": "directory",
+          "label": "压缩此文件夹下所有图片"
+        },
+        {
+          "type": "window",
+          "match": {
+            "app": [
+              "Finder.app",
+              "explorer.exe",
+              "SearchApp.exe"
+            ],
+            "class": [
+              "CabinetWClass",
+              "ExploreWClass"
+            ]
+          },
+          "label": "压缩此文件夹下所有图片"
+        }
+      ]
+    }
+  ]
+}
