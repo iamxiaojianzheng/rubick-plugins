@@ -1,0 +1,12 @@
+.synonym .content div + div {
+  margin-top: 10px;
+}
+.synonym .content .word-mean {
+  margin-top: 10px;
+}
+.synonym .content .ci .ci-item {
+  color: rgb(0, 190, 255);
+  cursor: pointer;
+  display: inline-block;
+  margin-right: 10px;
+}

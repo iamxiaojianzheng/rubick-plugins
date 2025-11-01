@@ -1,0 +1,37 @@
+{
+  "name": "@jiahe/rubick-jinshan-translate",
+  "pluginName": "翻译",
+  "version": "1.0.0",
+  "description": "翻译",
+  "pluginType": "ui",
+  "main": "index.html",
+  "preload": "preload.js",
+  "author": "JIAHE",
+  "logo": "https://fanyi-cdn.cdn.bcebos.com/webStatic/translation/img/favicon/favicon.ico",
+  "homePage": "https://raw.githubusercontent.com/iamxiaojianzheng/rubick-plugins/refs/heads/main/jinshan-translate/README.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/iamxiaojianzheng/rubick-plugins/tree/main/jinshan-translate"
+  },
+  "features": [
+    {
+      "code": "index",
+      "explain": "翻译",
+      "cmds": [
+        "fy",
+        "translate",
+        "翻译",
+        {
+          "type": "over",
+          "label": "翻译"
+        }
+      ]
+    }
+  ],
+  "keywords": [],
+  "license": "MIT",
+  "dependencies": {
+    "crypto": "^1.0.1",
+    "lodash.debounce": "^4.0.8"
+  }
+}

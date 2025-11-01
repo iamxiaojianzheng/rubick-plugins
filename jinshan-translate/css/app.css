@@ -1,0 +1,14 @@
+#app {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+}
+#app .show {
+  visibility: visible;
+}
+#app .hide {
+  visibility: hidden;
+}
+#app > div + div {
+  margin-top: 10px;
+}

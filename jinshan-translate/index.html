@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>翻译</title>
+    <style>
+      .divider {
+        border-top: 1px dashed hsla(0,0%,5%,.06);
+        padding: 10px 0;
+        font-size: 16px;
+        font-weight: bold;
+      }
+    </style>
+    <link rel="stylesheet" href="css/common.css" />
+    <link rel="stylesheet" href="css/app.css" />
+    <link rel="stylesheet" href="css/baseInfo.css" />
+    <link rel="stylesheet" href="css/means.css" />
+    <link rel="stylesheet" href="css/exchange.css" />
+    <link rel="stylesheet" href="css/synonym.css" />
+  </head>
+
+  <body>
+    <div id="app">
+      <div class="baseInfo">
+        <div class="word-name"></div>
+        <div class="word-tags"></div>
+        <div class="symbols">
+          <div class="symbols-en">
+            <span>英</span>
+            <span class="symbols-ph"></span>
+            <img id="symbols-audio-img" src="https://picx.zhimg.com/v2-092cd5aeb5ef3861a2c952a6b4a2406f.png"></img>
+            <audio id="symbols-audio" />
+          </div>
+          <div class="symbols-am">
+            <span>美</span>
+            <span class="symbols-ph"></span>
+            <img id="symbols-audio-img" src="https://picx.zhimg.com/v2-092cd5aeb5ef3861a2c952a6b4a2406f.png"></img>
+            <audio id="symbols-audio" />
+          </div>
+        </div>
+      </div>
+      <div class="means">
+        <div class="title divider">释义</div>
+        <div class="content"></div>
+      </div>
+      <div class="exchange">
+        <div class="title divider">词态变化</div>
+        <div class="content"></div>
+      </div>
+      <div class="synonym">
+        <div class="title divider">同义词</div>
+        <div class="content"></div>
+      </div>
+      <div class="sentence-example"></div>
+      <div class="ee-mean"></div>
+      <div class="cet4"></div>
+      <div class="cet6"></div>
+    </div>
+    <!-- <footer>基于金山词霸</footer> -->
+  </body>
+</html>
+

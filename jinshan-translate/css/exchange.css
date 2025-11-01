@@ -1,0 +1,11 @@
+.exchange .content {
+  display: flex;
+}
+.exchange .content .item {
+  margin-right: 10px;
+}
+.exchange .content .item > span + span {
+  color: rgb(0, 190, 255);
+  cursor: pointer;
+  display: inline-block;
+}
