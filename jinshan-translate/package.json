@@ -1,7 +1,7 @@
 {
   "name": "@jiahe/rubick-jinshan-translate",
   "pluginName": "翻译",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "翻译",
   "pluginType": "ui",
   "main": "index.html",
@@ -31,7 +31,6 @@
   "keywords": [],
   "license": "MIT",
   "dependencies": {
-    "crypto": "^1.0.1",
-    "lodash.debounce": "^4.0.8"
+    "crypto": "^1.0.1"
   }
 }
