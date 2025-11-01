@@ -1,6 +1,6 @@
 const crypto = require("crypto");
 const debounce = require("./lodash.debounce");
-const utils = require("./utils");
+const { hideElement, showElement, isEmpty, isNotEmpty } = require("./utils");
 const debounceTranslate = debounce(translate, 500);
 
 rubick.onPluginReady(({ code, type, payload }) => {
@@ -60,37 +60,16 @@ function translate(word) {
 
   sign_str = crypto.createHash("md5").update(hashMessage).digest("hex");
 
-  console.log(sign_str);
+  // console.log(sign_str);
   // query_data['sign'] = sign_str[:16]
   query_data["signature"] = sign_str;
 
   fetch(base_url + "?" + objectToQueryString(query_data))
     .then((b) => b.json())
     .then((res) => {
-      console.log(res);
+      // console.log(res);
       parseContent(res);
       showApp();
-
-      // let appEl = document.getElementById("app");
-      // let html = ``;
-      // if (baseInfo.symbols) {
-      //   const { symbols, word_name } = baseInfo;
-      //   html += `<h3>${word_name}</h3>`;
-      //   let parts = symbols[0].parts;
-      //
-      //   for (var idx in parts) {
-      //     const { part, means } = parts[idx];
-      //     html += `<div>${part}<div>`;
-      //     html += `<div>${means.join("; ")}<div>`;
-      //   }
-      // } else {
-      //   const { translate_result, translate_msg } = baseInfo;
-      //   html += `<h3>${message.word_name}</h3>`;
-      //   html += `<div>${translate_result}<div>`;
-      //   html += `<div class='gray'>${translate_msg}<div>`;
-      // }
-      //
-      // appEl.innerHTML = html;
     })
     .catch((error) => console.error(error));
 }
@@ -108,7 +87,14 @@ function parseContent(res) {
     new_sentence,
     cetFour,
     cetSix,
+    word_name,
   } = res.message;
+  resetAppDoc();
+
+  if (isNotEmpty(word_name)) {
+    unknow(word_name, baseInfo);
+  }
+
   parseBaseInfo(baseInfo);
   parseSynonym(synonym);
   parseNewSentence(new_sentence);
@@ -116,61 +102,161 @@ function parseContent(res) {
   parseCetSix(cetSix);
 }
 
-function parseBaseInfo(baseInfo) {
-  const { word_name, symbols, word_tag, exchange } = baseInfo;
-  document.querySelector(".word-name").innerText = word_name;
-  document.querySelector(".word-tags").innerText = word_tag
-    .map((item) => {
-      if (item == 0) return "考研";
-      else if (item == 1) return "CET6";
-      else if (item == 2) return "CET4";
-      else if (item == 3) return "GRE";
-      else if (item == 4) return "TOEFL";
-      else if (item == 5) return "IELTS";
-      else if (item == 6) return "高中";
-      else return "";
-    })
-    .join("/");
-  const symbolItem = symbols[0];
-  const { ph_en, ph_am, ph_other, ph_en_mp3, ph_am_mp3, ph_other_pm3, parts } =
-    symbolItem;
-  const symbolsEl = document.querySelector(".symbols");
-  const symbolsEnEl = symbolsEl.querySelector(".symbols-en");
-  if (ph_en) {
-    symbolsEnEl.querySelector(".symbols-ph").innerText = ph_en;
-    symbolsEnEl.querySelector("img").addEventListener("click", function () {
-      const enAudioEl = symbolsEnEl.querySelector("audio");
-      enAudioEl.src = ph_en_mp3;
-      enAudioEl.oncanplaythrough = function () {
-        enAudioEl.play();
-      };
-    });
-  } else {
-    symbolsEnEl.style.display = "none";
+function resetAppDoc() {
+  document.getElementById("app").innerHTML = `
+      <div class="baseInfo">
+        <div class="word-name"></div>
+        <div class="word-tags"></div>
+        <div class="symbols">
+          <div class="symbols-en">
+            <span>英</span>
+            <span class="symbols-ph"></span>
+            <img id="symbols-audio-img" src="https://picx.zhimg.com/v2-092cd5aeb5ef3861a2c952a6b4a2406f.png"></img>
+            <audio id="symbols-audio" />
+          </div>
+          <div class="symbols-am">
+            <span>美</span>
+            <span class="symbols-ph"></span>
+            <img id="symbols-audio-img" src="https://picx.zhimg.com/v2-092cd5aeb5ef3861a2c952a6b4a2406f.png"></img>
+            <audio id="symbols-audio" />
+          </div>
+          <div class="symbols-other">
+            <span> </span>
+            <span class="symbols-ph"></span>
+            <img id="symbols-audio-img" src="https://picx.zhimg.com/v2-092cd5aeb5ef3861a2c952a6b4a2406f.png"></img>
+            <audio id="symbols-audio" />
+          </div>
+        </div>
+      </div>
+      <div class="means">
+        <div class="title divider">释义</div>
+        <div class="content"></div>
+      </div>
+      <div class="exchange">
+        <div class="title divider">词态变化</div>
+        <div class="content"></div>
+      </div>
+      <div class="synonym">
+        <div class="title divider">同义词</div>
+        <div class="content"></div>
+      </div>
+      <div class="sentence-example"></div>
+      <div class="ee-mean"></div>
+      <div class="cet4"></div>
+      <div class="cet6"></div>
+`;
+}
+
+function unknow(word_name, baseInfo) {
+  const wordNameEl = document.querySelector(".word-name");
+  if (word_name.includes(" ")) {
+    wordNameEl.style.fontSize = "14px";
   }
-  const symbolsAmEl = symbolsEl.querySelector(".symbols-am");
-  if (ph_am) {
-    symbolsAmEl.querySelector(".symbols-ph").innerText = ph_am;
-    symbolsAmEl.querySelector("img").addEventListener("click", function () {
-      const amAudioEl = symbolsAmEl.querySelector("audio");
-      amAudioEl.src = ph_am_mp3;
-      amAudioEl.oncanplaythrough = function () {
-        amAudioEl.play();
-      };
-    });
-  } else {
-    symbolsAmEl.style.display = "none";
+  wordNameEl.innerText = word_name;
+
+  const { translate_result, translate_msg } = baseInfo;
+  const meansEl = document.querySelector(".means .content");
+  meansEl.innerHTML = `<div style="font-size: 16px;">${translate_result}</div>
+  <div style="font-size: 12px; color: gray; margin-top: 10px">${translate_msg}</div>`;
+  showElement(".means");
+  return;
+}
+
+function parseBaseInfo(baseInfo) {
+  const { word_name, symbols, word_tag, exchange, translate_type } = baseInfo;
+  if (translate_type == 2) {
+    hideElement(".symbols");
+    return;
   }
 
-  parseMeans(parts);
+  document.querySelector(".word-name").innerText = word_name;
+
+  if (isNotEmpty(word_tag)) {
+    document.querySelector(".word-tags").innerText = word_tag
+      .map((item) => {
+        if (item == 0) return "考研";
+        else if (item == 1) return "CET6";
+        else if (item == 2) return "CET4";
+        else if (item == 3) return "GRE";
+        else if (item == 4) return "TOEFL";
+        else if (item == 5) return "IELTS";
+        else if (item == 6) return "高中";
+        else return "";
+      })
+      .join("/");
+  }
+
+  if (isNotEmpty(symbols)) {
+    const symbolItem = symbols[0];
+    const {
+      ph_en,
+      ph_am,
+      ph_other,
+      ph_en_mp3,
+      ph_am_mp3,
+      ph_other_pm3,
+      parts,
+    } = symbolItem;
+    const symbolsEl = document.querySelector(".symbols");
+    const symbolsEnEl = symbolsEl.querySelector(".symbols-en");
+    if (ph_en) {
+      symbolsEnEl.querySelector(".symbols-ph").innerText = ph_en;
+      if (ph_en_mp3) {
+        symbolsEnEl.querySelector("img").addEventListener("click", function () {
+          const enAudioEl = symbolsEnEl.querySelector("audio");
+          enAudioEl.src = ph_en_mp3;
+          enAudioEl.oncanplaythrough = function () {
+            enAudioEl.play();
+          };
+        });
+      }
+    } else {
+      hideElement(symbolsEnEl);
+    }
+    const symbolsAmEl = symbolsEl.querySelector(".symbols-am");
+    if (ph_am) {
+      symbolsAmEl.querySelector(".symbols-ph").innerText = ph_am;
+      if (ph_am_mp3) {
+        symbolsAmEl.querySelector("img").addEventListener("click", function () {
+          const amAudioEl = symbolsAmEl.querySelector("audio");
+          amAudioEl.src = ph_am_mp3;
+          amAudioEl.oncanplaythrough = function () {
+            amAudioEl.play();
+          };
+        });
+      }
+    } else {
+      hideElement(symbolsAmEl);
+    }
+    const symbolsOtherEl = symbolsEl.querySelector(".symbols-other");
+    if (ph_other) {
+      symbolsOtherEl.querySelector(".symbols-ph").innerText = ph_other;
+      if (ph_other_pm3) {
+        symbolsOtherEl
+          .querySelector("img")
+          .addEventListener("click", function () {
+            const amAudioEl = symbolsOtherEl.querySelector("audio");
+            amAudioEl.src = ph_other_mp3;
+            amAudioEl.oncanplaythrough = function () {
+              amAudioEl.play();
+            };
+          });
+      }
+    } else {
+      hideElement(symbolsOtherEl);
+    }
+
+    parseMeans(parts);
+  }
+
   parseExchange(exchange);
 }
 
 function parseMeans(parts) {
-  if (utils.isEmpty(parts)) {
-    document.querySelector(".means").style.display = "none";
+  if (isEmpty(parts)) {
+    hideElement(".means");
   } else {
-    document.querySelector(".means").style.display = "block";
+    showElement(".means");
     let allPartsDiv = ``;
     const meansEl = document.querySelector(".means .content");
     for (const partItem of parts) {
@@ -186,8 +272,8 @@ function parseMeans(parts) {
 }
 
 function parseExchange(exchange) {
-  document.querySelector(".exchange").style.display = "none";
-  if (utils.isNotEmpty(exchange)) {
+  hideElement(".exchange");
+  if (isNotEmpty(exchange)) {
     let allExchangeDiv = "";
     const exchangeEl = document.querySelector(".exchange .content");
     const itemIds = [];
@@ -222,12 +308,11 @@ function parseExchange(exchange) {
       allExchangeDiv += itemDiv;
     }
     exchangeEl.innerHTML = allExchangeDiv;
-    document.querySelector(".exchange").style.display = "block";
-    if (utils.isNotEmpty(itemIds)) {
+    showElement(".exchange");
+    if (isNotEmpty(itemIds)) {
       itemIds.forEach((itemId) => {
-        const itemEl = document.getElementById(itemId);
-        itemEl.addEventListener("click", function () {
-          rubick.setSubInputValue(itemEl.innerText);
+        document.getElementById(itemId).addEventListener("click", function (e) {
+          rubick.setSubInputValue(e.target.innerText);
         });
       });
     }
@@ -236,45 +321,58 @@ function parseExchange(exchange) {
 
 function parseSynonym(synonym) {
   document.querySelector(".synonym").style.display = "none";
-  if (utils.isNotEmpty(synonym)) {
+  hideElement(".synonym");
+  if (isNotEmpty(synonym)) {
     let rootDiv = "";
     const synonymEl = document.querySelector(".synonym .content");
+    const ciIds = [];
     for (const item of synonym) {
       const { part_name, means } = item;
       for (const mean of means) {
         const { word_mean, cis } = mean;
         rootDiv += `<div class="word-mean">${part_name} ${word_mean}</div>`;
-        if (utils.isNotEmpty(cis)) {
+        if (isNotEmpty(cis)) {
           rootDiv += `<div class="ci">`;
           for (const w of cis) {
-            rootDiv += `<span class="ci-item">${w}</span>`;
+            const id = `ci-${w}`;
+            ciIds.push(id);
+            rootDiv += `<span id="${id}" class="ci-item">${w}</span>`;
           }
           rootDiv += "</div>";
         }
       }
     }
+
     synonymEl.innerHTML = rootDiv;
-    document.querySelector(".synonym").style.display = "block";
+    if (isNotEmpty(ciIds)) {
+      ciIds.forEach((itemId) => {
+        document.getElementById(itemId).addEventListener("click", function (e) {
+          rubick.setSubInputValue(e.target.innerText);
+        });
+      });
+    }
+
+    showElement(".synonym");
   }
 }
 
 function parseNewSentence(new_sentence) {
-  document.querySelector(".sentence-example").style.display = "none";
-  if (utils.isNotEmpty(new_sentence)) {
-    document.querySelector(".sentence-example").style.display = "block";
+  hideElement(".sentence-example");
+  if (isNotEmpty(new_sentence)) {
+    showElement(".sentence-example");
   }
 }
 
 function parseCetFour(cetFour) {
   document.querySelector(".cet4").style.display = "none";
-  if (utils.isNotEmpty(cetFour)) {
+  if (isNotEmpty(cetFour)) {
     document.querySelector(".cet4").style.display = "block";
   }
 }
 
 function parseCetSix(cetSix) {
   document.querySelector(".cet6").style.display = "none";
-  if (utils.isNotEmpty(cetSix)) {
+  if (isNotEmpty(cetSix)) {
     document.querySelector(".cet6").style.display = "block";
   }
 }

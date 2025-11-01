@@ -1,7 +1,7 @@
 {
   "name": "@jiahe/rubick-jinshan-translate",
   "pluginName": "翻译",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "翻译",
   "pluginType": "ui",
   "main": "index.html",

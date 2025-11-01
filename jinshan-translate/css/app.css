@@ -11,4 +11,5 @@
 }
 #app > div + div {
   margin-top: 10px;
+  display: none;
 }

@@ -19,7 +19,25 @@ function isEmpty(obj) {
   return false; // 对于其他类型的值，假定它们不是空的
 }
 
+function hideElement(element) {
+  if (element instanceof HTMLElement) {
+    element.style.display = "none";
+  } else if (typeof element === "string") {
+    document.querySelector(element).style.display = "none";
+  }
+}
+
+function showElement(element) {
+  if (element instanceof HTMLElement) {
+    element.style.display = "block";
+  } else if (typeof element === "string") {
+    document.querySelector(element).style.display = "block";
+  }
+}
+
 module.exports = {
   isEmpty,
   isNotEmpty,
+  hideElement,
+  showElement,
 };
