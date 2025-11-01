@@ -14,7 +14,11 @@ async function find(rootPath, includeFile, exclude) {
     const files = [];
     const dirFiles = await fs.readdir(rootPath);
     for (let it of dirFiles) {
-      const childrens = await find(path.join(rootPath, it), includeFile, exclude);
+      const childrens = await find(
+        path.join(rootPath, it),
+        includeFile,
+        exclude,
+      );
       files.push(...childrens);
     }
     return files;
@@ -25,7 +29,7 @@ async function find(rootPath, includeFile, exclude) {
 const imageReg = /\.(png|jpeg|jpg|webp)$/i;
 const excludeDirReg = /^(\.|node_modules)/i;
 window.preload = window.preload || {};
-const tempPath = path.join(utools.getPath("temp"), "utools.tinypng");
+const tempPath = path.join(rubick.getPath("temp"), "rubick.tinypng");
 async function handlePluginEnter({ code, type, payload }) {
   try {
     console.log("tempPath: ", tempPath);
@@ -37,62 +41,61 @@ async function handlePluginEnter({ code, type, payload }) {
     const config = {
       date,
       images: [],
-      tempdir: path.join(tempPath, String(date))
+      tempdir: path.join(tempPath, String(date)),
     };
     const paths = [];
     if (["files", "drop"].includes(type)) {
       paths.push(...payload.filter((it) => it.path).map((it) => it.path));
     } else if (type === "window") {
-      const curentDir = await utools.readCurrentFolderPath().catch(() => null);
-      if (curentDir)
-        paths.push(curentDir);
+      const curentDir = await rubick.readCurrentFolderPath().catch(() => null);
+      if (curentDir) paths.push(curentDir);
     }
     for (const it of paths) {
-      if (excludeDirReg.test(it))
-        continue;
+      if (excludeDirReg.test(it)) continue;
       const fileType = await fs.stat(it).catch(() => null);
       const images = [];
       let basedir = "";
       if (fileType == null ? void 0 : fileType.isFile()) {
-        if (!imageReg.test(it))
-          continue;
+        if (!imageReg.test(it)) continue;
         images.push(it);
         basedir = path.dirname(it);
       } else if (fileType == null ? void 0 : fileType.isDirectory()) {
         basedir = path.dirname(it);
-        images.push(...await find(it, imageReg, excludeDirReg));
+        images.push(...(await find(it, imageReg, excludeDirReg)));
       }
       for (const img of images) {
         const name = img.replace(basedir, "").replace(path.sep, "");
         const nameExist = config.images.some((it2) => it2.name === name);
         if (nameExist) {
-          utools.showNotification(`此文件名已被占用：“${name}” 跳过处理`);
+          rubick.showNotification(`此文件名已被占用：“${name}” 跳过处理`);
           continue;
         }
         config.images.push({
           name,
           path: img,
           size: (await fs.stat(img)).size,
-          compress: { path: path.join(config.tempdir, name), progress: 0 }
+          compress: { path: path.join(config.tempdir, name), progress: 0 },
         });
       }
     }
-    if (config.images.length === 0)
-      return;
-    window.dispatchEvent(new CustomEvent("tinyping-compression", { detail: config }));
+    if (config.images.length === 0) return;
+    window.dispatchEvent(
+      new CustomEvent("tinyping-compression", { detail: config }),
+    );
   } catch (error) {
-    utools.showNotification(String(error));
+    rubick.showNotification(String(error));
   }
 }
-utools.onPluginEnter(handlePluginEnter);
-utools.onPluginOut(async (exit) => {
-  if (!exit)
-    return;
+rubick.onPluginEnter(handlePluginEnter);
+rubick.onPluginOut(async (exit) => {
+  if (!exit) return;
   const dir = await fs.readdir(tempPath);
   for (const name of dir) {
     const file = path.join(tempPath, name);
     const stat = await fs.stat(file);
-    stat.isFile() ? await fs.unlink(file) : await fs.rmdir(file, { recursive: true });
+    stat.isFile()
+      ? await fs.unlink(file)
+      : await fs.rmdir(file, { recursive: true });
   }
 });
 function readFile(p) {
@@ -111,7 +114,19 @@ async function readDir(p) {
 }
 async function replaceFiles(files) {
   for (const [from, to] of files) {
-    await new Promise((res, rej) => fs$1.createReadStream(from).pipe(fs$1.createWriteStream(to)).on("close", res).on("error", rej));
+    await new Promise((res, rej) =>
+      fs$1
+        .createReadStream(from)
+        .pipe(fs$1.createWriteStream(to))
+        .on("close", res)
+        .on("error", rej),
+    );
   }
 }
-Object.assign(window.preload, { handlePluginEnter, readFile, writeFile, readDir, replaceFiles });
+Object.assign(window.preload, {
+  handlePluginEnter,
+  readFile,
+  writeFile,
+  readDir,
+  replaceFiles,
+});

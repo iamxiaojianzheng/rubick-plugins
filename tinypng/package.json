@@ -1,9 +1,9 @@
 {
-  "name": "@jiahe/tinypng",
+  "name": "@jiahe/rubick-tinypng",
   "pluginName": "tinypng压缩图片",
   "description": "使用tinypng压缩图片",
   "author": "JIAHE",
-  "homepage": "https://github.com/csj8520",
+  "homepage": "https://github.com/iamxiaojianzheng/rubick-plugins/tinypng",
   "version": "2.0.2",
   "logo": "logo.png",
   "main": "index.html",
