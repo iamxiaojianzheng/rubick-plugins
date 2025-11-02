@@ -8,7 +8,7 @@
   "pluginName": "tinypng压缩图片",
   "description": "使用tinypng压缩图片",
   "homePage": "https://raw.githubusercontent.com/iamxiaojianzheng/rubick-plugins/refs/heads/main/tinypng/README.md",
-  "logo": "https://picx.zhimg.com/v2-b97b158c37b9d9dd1ebe8ca42704c4c7.png",
+  "logo": "https://picx.zhimg.com/v2-b642bdc9473b57d609f9bdf367a3dc42.png",
   "features": [
     {
       "code": "tinypng",
