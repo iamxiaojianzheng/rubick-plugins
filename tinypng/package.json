@@ -1,17 +1,14 @@
 {
   "name": "@jiahe/rubick-tinypng",
-  "pluginName": "tinypng压缩图片",
-  "description": "使用tinypng压缩图片",
   "author": "JIAHE",
-  "homepage": "https://github.com/iamxiaojianzheng/rubick-plugins/tinypng",
-  "version": "2.0.2",
-  "logo": "logo.png",
+  "version": "1.0.0",
+  "pluginType": "ui",
   "main": "index.html",
   "preload": "preload.js",
-  "development": {
-    "main": "http://localhost:3100",
-    "preload": "preload.js"
-  },
+  "pluginName": "tinypng压缩图片",
+  "description": "使用tinypng压缩图片",
+  "homePage": "https://raw.githubusercontent.com/iamxiaojianzheng/rubick-plugins/refs/heads/main/tinypng/README.md",
+  "logo": "https://picx.zhimg.com/v2-b97b158c37b9d9dd1ebe8ca42704c4c7.png",
   "features": [
     {
       "code": "tinypng",

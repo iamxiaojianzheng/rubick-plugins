@@ -2,14 +2,31 @@
 const path = require("path");
 const fs = require("fs/promises");
 const fs$1 = require("fs");
+const { webUtils } = require("electron");
+
+rubick.onPluginEnter(handlePluginEnter);
+rubick.onPluginOut(async (exit) => {
+  if (!exit) return;
+  const dir = await fs.readdir(tempPath);
+  for (const name of dir) {
+    const file = path.join(tempPath, name);
+    const stat = await fs.stat(file);
+    stat.isFile()
+      ? await fs.unlink(file)
+      : await fs.rmdir(file, { recursive: true });
+  }
+});
+
+const imageReg = /\.(png|jpeg|jpg|webp)$/i;
+const excludeDirReg = /^(\.|node_modules)/i;
+window.preload = window.preload || {};
+const tempPath = path.join(rubick.getPath("temp"), "rubick.tinypng");
+
 async function find(rootPath, includeFile, exclude) {
-  if (exclude == null ? void 0 : exclude.test(rootPath))
-    return [];
+  if (exclude == null ? void 0 : exclude.test(rootPath)) return [];
   const root = await fs.stat(rootPath).catch(() => null);
-  if (!root)
-    return [];
-  if (root.isFile() && includeFile.test(rootPath))
-    return [rootPath];
+  if (!root) return [];
+  if (root.isFile() && includeFile.test(rootPath)) return [rootPath];
   if (root.isDirectory()) {
     const files = [];
     const dirFiles = await fs.readdir(rootPath);
@@ -26,14 +43,12 @@ async function find(rootPath, includeFile, exclude) {
     return [];
   }
 }
-const imageReg = /\.(png|jpeg|jpg|webp)$/i;
-const excludeDirReg = /^(\.|node_modules)/i;
-window.preload = window.preload || {};
-const tempPath = path.join(rubick.getPath("temp"), "rubick.tinypng");
+
 async function handlePluginEnter({ code, type, payload }) {
   try {
-    console.log("tempPath: ", tempPath);
-    console.log("code, type, payload: ", code, type, payload);
+    console.log(rubick.getCopyedFiles());
+    // console.log("tempPath: ", tempPath);
+    // console.log("code, type, payload: ", code, type, payload);
     const stat = await fs.stat(tempPath).catch(() => null);
     if (!(stat == null ? void 0 : stat.isDirectory()))
       await fs.mkdir(tempPath, { recursive: true });
@@ -45,7 +60,7 @@ async function handlePluginEnter({ code, type, payload }) {
     };
     const paths = [];
     if (["files", "drop"].includes(type)) {
-      paths.push(...payload.filter((it) => it.path).map((it) => it.path));
+      paths.push(...payload.map((it) => webUtils.getPathForFile(it)));
     } else if (type === "window") {
       const curentDir = await rubick.readCurrentFolderPath().catch(() => null);
       if (curentDir) paths.push(curentDir);
@@ -86,21 +101,11 @@ async function handlePluginEnter({ code, type, payload }) {
     rubick.showNotification(String(error));
   }
 }
-rubick.onPluginEnter(handlePluginEnter);
-rubick.onPluginOut(async (exit) => {
-  if (!exit) return;
-  const dir = await fs.readdir(tempPath);
-  for (const name of dir) {
-    const file = path.join(tempPath, name);
-    const stat = await fs.stat(file);
-    stat.isFile()
-      ? await fs.unlink(file)
-      : await fs.rmdir(file, { recursive: true });
-  }
-});
+
 function readFile(p) {
   return fs.readFile(p);
 }
+
 async function writeFile(p, data) {
   const dir = path.dirname(p);
   const stat = await fs.stat(dir).catch(() => null);
@@ -108,10 +113,12 @@ async function writeFile(p, data) {
     await fs.mkdir(dir, { recursive: true });
   return fs.writeFile(p, Buffer.from(data), "binary");
 }
+
 async function readDir(p) {
   const files = await fs.readdir(p);
   return files.map((it) => path.join(p, it));
 }
+
 async function replaceFiles(files) {
   for (const [from, to] of files) {
     await new Promise((res, rej) =>
@@ -123,6 +130,7 @@ async function replaceFiles(files) {
     );
   }
 }
+
 Object.assign(window.preload, {
   handlePluginEnter,
   readFile,
