@@ -7,7 +7,7 @@
   "main": "index.html",
   "preload": "preload.js",
   "author": "JIAHE",
-  "logo": "https://fanyi-cdn.cdn.bcebos.com/webStatic/translation/img/favicon/favicon.ico",
+  "logo": "https://picx.zhimg.com/v2-9430f623aec37eb86cab8e8d23273248.png",
   "homePage": "https://raw.githubusercontent.com/iamxiaojianzheng/rubick-plugins/refs/heads/main/jinshan-translate/README.md",
   "repository": {
     "type": "git",
