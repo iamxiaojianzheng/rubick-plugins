@@ -46,25 +46,35 @@ async function find(rootPath, includeFile, exclude) {
 
 async function handlePluginEnter({ code, type, payload }) {
   try {
-    console.log(rubick.getCopyedFiles());
     // console.log("tempPath: ", tempPath);
     // console.log("code, type, payload: ", code, type, payload);
+    // console.log(rubick.getCopyedFiles());
+
     const stat = await fs.stat(tempPath).catch(() => null);
-    if (!(stat == null ? void 0 : stat.isDirectory()))
+    if (!(stat == null ? void 0 : stat.isDirectory())) {
       await fs.mkdir(tempPath, { recursive: true });
+    }
+
     const date = Date.now();
     const config = {
       date,
       images: [],
       tempdir: path.join(tempPath, String(date)),
     };
+
     const paths = [];
     if (["files", "drop"].includes(type)) {
-      paths.push(...payload.map((it) => webUtils.getPathForFile(it)));
+      paths.push(
+        ...payload.map((it) => {
+          if (it.path) return it.path;
+          webUtils.getPathForFile(it);
+        }),
+      );
     } else if (type === "window") {
       const curentDir = await rubick.readCurrentFolderPath().catch(() => null);
       if (curentDir) paths.push(curentDir);
     }
+
     for (const it of paths) {
       if (excludeDirReg.test(it)) continue;
       const fileType = await fs.stat(it).catch(() => null);

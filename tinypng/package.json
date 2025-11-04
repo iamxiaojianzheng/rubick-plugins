@@ -1,7 +1,7 @@
 {
   "name": "@jiahe/rubick-tinypng",
   "author": "JIAHE",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "pluginType": "ui",
   "main": "index.html",
   "preload": "preload.js",
