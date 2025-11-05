@@ -5,7 +5,6 @@ node_modules
 build.sh
 index.html
 favicon.ico
-logo.png
 
 # local env files
 .env.local

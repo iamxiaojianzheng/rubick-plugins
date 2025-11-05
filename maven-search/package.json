@@ -2,7 +2,7 @@
   "name": "@jiahe/rubick-maven-search",
   "author": "JIAHE",
   "license": "MIT",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "pluginType": "ui",
   "preload": "preload.js",
   "pluginName": "Maven搜索",
@@ -23,21 +23,33 @@
       "explain": "输入内容查询依赖，复制格式为maven格式",
       "cmds": [
         "maven",
-        "mvn"
+        "mvn",
+        {
+          "type": "over",
+          "label": "maven"
+        }
       ]
     },
     {
       "code": "gradle",
       "explain": "输入内容查询依赖，复制格式为gradle格式",
       "cmds": [
-        "gradle"
+        "gradle",
+        {
+          "type": "over",
+          "label": "maven"
+        }
       ]
     },
     {
       "code": "kotlin",
       "explain": "输入内容查询依赖，复制格式为gradle(kotlin)格式",
       "cmds": [
-        "kotlin"
+        "kotlin",
+        {
+          "type": "over",
+          "label": "maven"
+        }
       ]
     }
   ]
