@@ -20,13 +20,11 @@ rubick.setSubInput(({ text }) => {
 }, "请输入需要翻译的单词或短语");
 
 function showApp() {
-  document.getElementById("app").classList.remove("hiden");
+  document.getElementById("app").classList.remove("hide");
   document.getElementById("app").classList.add("show");
-  document.getElementById("app").style.visibility = "visible";
 }
 
 function hideApp() {
-  document.getElementById("app").style.visibility = "hidden";
   document.getElementById("app").classList.remove("show");
   document.getElementById("app").classList.add("hide");
 }

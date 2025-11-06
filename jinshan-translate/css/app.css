@@ -3,11 +3,13 @@
   flex-direction: column;
   padding: 20px;
 }
-#app .show {
+#app.show {
   visibility: visible;
+  display: block;
 }
-#app .hide {
+#app.hide {
   visibility: hidden;
+  display: none;
 }
 #app > div + div {
   margin-top: 10px;
