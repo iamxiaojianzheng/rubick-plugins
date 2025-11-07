@@ -4,7 +4,7 @@
   "description": "时间转换、base64编解码、URL编解码、哈希加密、Unicode、UUID、进制转换、HTML转义",
   "author": "JIAHE",
   "homepage": "https://raw.githubusercontent.com/iamxiaojianzheng/rubick-plugins/refs/heads/main/codehelper/README.md",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "index.html",
   "preload": "preload.js",
   "logo": "https://picx.zhimg.com/v2-5813fe289be430293b7a725b3fc21656.png",
@@ -19,6 +19,7 @@
         "date",
         "timestamp",
         "unixtime",
+        "时间日期",
         {
           "type": "regex",
           "minLength": 9,
