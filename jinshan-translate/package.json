@@ -1,7 +1,7 @@
 {
-  "name": "@jiahe/rubick-jinshan-translate",
+  "name": "@jiahe/ruck-jinshan-translate",
   "pluginName": "翻译",
-  "version": "1.0.4",
+  "version": "1.0.0",
   "description": "翻译",
   "pluginType": "ui",
   "main": "index.html",
@@ -9,10 +9,6 @@
   "author": "JIAHE",
   "logo": "https://picx.zhimg.com/v2-9430f623aec37eb86cab8e8d23273248.png",
   "homePage": "https://raw.githubusercontent.com/iamxiaojianzheng/rubick-plugins/refs/heads/main/jinshan-translate/README.md",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/iamxiaojianzheng/rubick-plugins/tree/main/jinshan-translate"
-  },
   "features": [
     {
       "code": "index",
@@ -28,6 +24,5 @@
       ]
     }
   ],
-  "keywords": [],
   "license": "MIT"
 }

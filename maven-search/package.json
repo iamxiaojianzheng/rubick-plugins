@@ -1,8 +1,8 @@
 {
-  "name": "@jiahe/rubick-maven-search",
+  "name": "@jiahe/ruck-maven-search",
   "author": "JIAHE",
   "license": "MIT",
-  "version": "1.0.2",
+  "version": "1.0.0",
   "pluginType": "ui",
   "preload": "preload.js",
   "pluginName": "Maven搜索",
@@ -12,10 +12,6 @@
   "scripts": {
     "build": "sh build.sh",
     "clean": "rm -rf ./dist"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/iamxiaojianzheng/rubick-plugins/tree/main/maven-search"
   },
   "features": [
     {
