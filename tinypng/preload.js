@@ -64,19 +64,17 @@ async function handlePluginEnter({ code, type, payload }) {
 
     const paths = [];
     if (["files", "drop"].includes(type)) {
-      paths.push(
-        ...payload.map((it) => {
-          if (it.path) return it.path;
-          webUtils.getPathForFile(it);
-        }),
-      );
+      payload.forEach((it) => {
+        const { path } = it;
+        paths.push(path || webUtils.getPathForFile(it));
+      });
     } else if (type === "window") {
       const curentDir = await rubick.readCurrentFolderPath().catch(() => null);
       if (curentDir) paths.push(curentDir);
     }
 
     for (const it of paths) {
-      if (excludeDirReg.test(it)) continue;
+      if (!it || excludeDirReg.test(it)) continue;
       const fileType = await fs.stat(it).catch(() => null);
       const images = [];
       let basedir = "";
