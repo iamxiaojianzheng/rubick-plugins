@@ -1,0 +1,22 @@
+{
+  "name": "@jiahe/ruck-ip-switcher",
+  "pluginName": "IP 地址切换",
+  "version": "1.0.0",
+  "author": "JIAHE",
+  "main": "index.html",
+  "preload": "preload.js",
+  "description": "快捷修改本机 IP 地址，保存多套 IP 方案，一键切换。",
+  "logo": "https://pic1.zhimg.com/v2-fc9b34ce58606063cd71f75fdd8d73aa.png",
+  "platform": ["win32"],
+  "features": [
+    {
+      "code": "default",
+      "explain": "启动 IP 地址切换工具",
+      "cmds": ["IP", "地址", "切换"]
+    }
+  ],
+  "development": {
+    "main": "http://localhost:8000/index.html",
+    "preload": "../public/preload.js"
+  }
+}
